@@ -35,32 +35,24 @@ class _MyAppState extends State<MyApp> {
     return file;
   }
 
-  Future<String?> generatePdf() async{
-
+  Future<String?> generatePdf() async {
     pdfWidget.Document pdfDocument = pdfWidget.Document();
 
-    pdfDocument.addPage(
-        pdfWidget.Page(
-            pageFormat: PdfPageFormat.a4,
-            margin: pdfWidget.EdgeInsets.all(20.0),
-            build: (pdfWidget.Context context) {
-              return pdfWidget.Center(
-                child: pdfWidget.Text("This is a beautiful PDF"),
-              );
-            }
-        )
-    );
+    pdfDocument.addPage(pdfWidget.Page(
+        pageFormat: PdfPageFormat.a4,
+        margin: pdfWidget.EdgeInsets.all(20.0),
+        build: (pdfWidget.Context context) {
+          return pdfWidget.Center(
+            child: pdfWidget.Text("This is a beautiful PDF"),
+          );
+        }));
 
     // Sauvegarde le PDF
-    File file = await writeFileFromBytes(
-        fileName: "temp",
-        fileType: "pdf",
-        fileContent: await pdfDocument.document.save());
+    File file = await writeFileFromBytes(fileName: "temp", fileType: "pdf", fileContent: await pdfDocument.document.save());
     return file.path;
   }
 
   Future<void> openFile() async {
-
     String? filePath = await generatePdf();
     final message = await OpenFile.open(filePath);
 
